@@ -1,0 +1,22 @@
+# Environment files
+server/.env
+.env*.local
+# Python cache files
+server/__pycache__/
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Logs
+logs
+*.log
+
+# Editor & OS files
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
