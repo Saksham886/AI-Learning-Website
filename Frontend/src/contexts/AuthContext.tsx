@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       jwtDecode<MyTokenPayload>(token); // you can remove this if backend validation is enough
 
-      const res = await fetch("https://ai-learning-website.onrender.com/auth/me", {
+      const res = await fetch("http://localhost:5000/auth/me", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
