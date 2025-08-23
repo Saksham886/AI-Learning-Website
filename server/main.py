@@ -26,6 +26,9 @@ app.register_blueprint(summarizer_bp, url_prefix="/summarize")
 from app.routes.dashboard_routes import dashboard_bp
 app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
 
-
+# Root route
+@app.route("/")
+def home():
+    return {"message": "EduGenie Backend is running 🚀"}
 if __name__ == "__main__":
     app.run(debug=True)
