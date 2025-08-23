@@ -4,6 +4,6 @@ services:
     env: python
     rootDir: .
     buildCommand: pip install -r requirements.txt
-    startCommand: python main.py
+    startCommand: gunicorn main:app   
     postBuild:
       - playwright install chromium --with-deps
