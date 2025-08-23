@@ -17,13 +17,28 @@ import {
 } from "lucide-react";
 import { explain } from "@/api/function";
 import {saveExplanation} from "@/api/explain"
+import jsPDF from "jspdf";
 export default function TopicExplainer() {
   const [topic, setTopic] = useState("");
   const [level, setLevel] = useState("");
   const [explanation, setExplanation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasExplanation, setHasExplanation] = useState(false);
-
+  const handleDownloadPdf = () => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+  
+    // Add title
+    doc.text("AI Explanation", 10, 10);
+  
+    // Add summary text (auto-wraps if long)
+    const lines = doc.splitTextToSize(explanation, 180);
+    doc.text(lines, 10, 20);
+  
+    // Save PDF
+    doc.save(`${topic}.pdf`);
+  };
   const handleExplain = async () => {
   if (!topic || !level) return;
 
@@ -174,65 +189,75 @@ export default function TopicExplainer() {
           </Card>
         </motion.div>
 
-        {/* Explanation Result */}
-        {(isLoading || hasExplanation) && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-primary" />
-                  <h3 className="text-lg font-semibold text-foreground">Explanation</h3>
-                </div>
-                
-                {hasExplanation && (
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">{topic}</Badge>
-                    <Badge 
-                      variant={
-                        level === 'beginner' ? 'default' : 
-                        level === 'intermediate' ? 'secondary' : 
-                        'destructive'
-                      }
-                    >
-                      {level}
-                    </Badge>
-                  </div>
-                )}
+      {/* Explanation Result */}
+      {(isLoading || hasExplanation) && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <Card className="p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-primary" />
+                <h3 className="text-lg font-semibold text-foreground">Explanation</h3>
               </div>
 
-              <Separator />
-
-              {isLoading ? (
-                <div className="flex items-center justify-center py-12">
-                  <div className="text-center space-y-4">
-                    <Loader className="w-8 h-8 animate-spin mx-auto text-primary" />
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium text-foreground">
-                        Generating explanation for "{topic}"
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        This may take a few moments...
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <Textarea
-                    value={explanation}
-                    readOnly
-                    className="min-h-[200px] resize-none bg-muted/50"
-                    placeholder="Your explanation will appear here..."
-                  />
+              {hasExplanation && (
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">{topic}</Badge>
+                  <Badge 
+                    variant={
+                      level === 'beginner' ? 'default' : 
+                      level === 'intermediate' ? 'secondary' : 
+                      'destructive'
+                    }
+                  >
+                    {level}
+                  </Badge>
                 </div>
               )}
-            </Card>
-          </motion.div>
-        )}
+            </div>
+
+            <Separator />
+
+            {isLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="text-center space-y-4">
+                  <Loader className="w-8 h-8 animate-spin mx-auto text-primary" />
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-foreground">
+                      Generating explanation for "{topic}"
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      This may take a few moments...
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* New attractive explanation box */}
+                <div className="p-4 bg-muted/40 rounded-xl border shadow-sm max-h-[400px] overflow-y-auto prose prose-sm dark:prose-invert">
+                  <p className="whitespace-pre-line">{explanation}</p>
+                </div>
+
+                {/* Action buttons */}
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigator.clipboard.writeText(explanation)}
+                  >
+                    Copy to Clipboard
+                  </Button>
+                  <Button variant="secondary" onClick={handleDownloadPdf}>Download PDF</Button>
+                </div>
+              </div>
+            )}
+          </Card>
+        </motion.div>
+      )}
+
       </div>
     </div>
   );

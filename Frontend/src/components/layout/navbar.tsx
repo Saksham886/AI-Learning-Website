@@ -36,6 +36,7 @@ export const Navbar = () => {
     { name: "Home", href: "/", icon: Home },
     { name: "Quiz", href: "/quiz-setup", icon: HelpCircle },
     { name: "Explainer", href: "/topic-explainer", icon: Trophy },
+    { name: "Summarizer", href: "/summarizer", icon: Trophy },
     ...(isLoggedIn ? [
       { name: "Dashboard", href: "/dashboard", icon: BarChart3 },
       { name: "Progress", href: "/progress", icon: Trophy },

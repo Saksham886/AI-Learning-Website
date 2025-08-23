@@ -19,6 +19,9 @@ app.register_blueprint(auth_bp, url_prefix="/auth")
 # Tools Route
 from app.routes.ai_routes import ai_bp
 app.register_blueprint(ai_bp, url_prefix="/ai")
+# summarizer
+from app.routes.summarizer_routes import summarizer_bp
+app.register_blueprint(summarizer_bp, url_prefix="/summarize")
 #Dashboard Route
 from app.routes.dashboard_routes import dashboard_bp
 app.register_blueprint(dashboard_bp, url_prefix="/dashboard")

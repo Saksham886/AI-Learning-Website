@@ -6,3 +6,12 @@ pymongo
 python-dotenv
 langchain 
 langchain-groq
+langchain_community
+validators
+playwright
+unstructured
+fpdf
+pdfplumber
+huggingface_hub
+youtube-transcript-api
+transformers

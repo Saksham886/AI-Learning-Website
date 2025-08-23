@@ -35,7 +35,7 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="/quiz" className="text-muted-foreground hover:text-primary transition-colors">
+                <a href="/quiz-setup" className="text-muted-foreground hover:text-primary transition-colors">
                   Take Quiz
                 </a>
               </li>
