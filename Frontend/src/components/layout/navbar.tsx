@@ -12,7 +12,7 @@ import {
   Menu,
   X,
   User,
-  LogOut
+  LogOut,FileText
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,7 +36,7 @@ export const Navbar = () => {
     { name: "Home", href: "/", icon: Home },
     { name: "Quiz", href: "/quiz-setup", icon: HelpCircle },
     { name: "Explainer", href: "/topic-explainer", icon: Trophy },
-    { name: "Summarizer", href: "/summarizer", icon: Trophy },
+    { name: "Summarizer", href: "/summarizer", icon: FileText },
     ...(isLoggedIn ? [
       { name: "Dashboard", href: "/dashboard", icon: BarChart3 },
       { name: "Progress", href: "/progress", icon: Trophy },

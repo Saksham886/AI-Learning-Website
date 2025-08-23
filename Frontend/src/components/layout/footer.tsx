@@ -30,11 +30,6 @@ export const Footer = () => {
             <h3 className="font-semibold text-foreground">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/topics" className="text-muted-foreground hover:text-primary transition-colors">
-                  Browse Topics
-                </a>
-              </li>
-              <li>
                 <a href="/quiz-setup" className="text-muted-foreground hover:text-primary transition-colors">
                   Take Quiz
                 </a>

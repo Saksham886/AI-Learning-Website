@@ -37,12 +37,13 @@ export default function Landing() {
     }
   ];
 
-  const stats = [
-    { value: "10K+", label: "Students" },
-    { value: "500+", label: "Lessons" },
-    { value: "95%", label: "Success Rate" },
-    { value: "50+", label: "Topics" }
-  ];
+const stats = [
+  { value: "5K+", label: "Explanations Given" },
+  { value: "2K+", label: "Summaries Generated" },
+  { value: "1K+", label: "Quizzes Created" },
+  { value: "90%", label: "Student Satisfaction" }
+];
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -229,11 +230,6 @@ export default function Landing() {
                     <Button size="lg" className="group">
                       Start Learning Today
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                  <Link to="/topics">
-                    <Button variant="outline" size="lg">
-                      Browse Topics
                     </Button>
                   </Link>
                 </div>
