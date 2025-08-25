@@ -48,11 +48,12 @@ const handleDownloadPdf = () => {
 
     // --- Call your backend summarize API ---
     if (url) {
-      const res = await summarizeUrl(url);
+      const res = await summarizeUrl(url,language);
       data = res;
     } else if (file) {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("language", language);
       const res = await summarizePdf(formData);
       data = res;
     }
@@ -148,9 +149,12 @@ const handleDownloadPdf = () => {
                 <Button variant="outline" onClick={()=>navigator.clipboard.writeText(summary)}>
                   <ClipboardCopy className="w-4 h-4 mr-2"/> Copy
                 </Button>
-                <Button variant="secondary" onClick={handleDownloadPdf}>
-                  <Download className="w-4 h-4 mr-2"/> Download PDF
-                </Button>
+                {language === "English" && (
+                  <Button variant="secondary" onClick={handleDownloadPdf}>
+                    <Download className="w-4 h-4 mr-2" /> Download PDF
+                  </Button>
+                )}
+
               </div>
             </Card>
           </motion.div>

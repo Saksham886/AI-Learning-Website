@@ -62,8 +62,6 @@ export default function QuizSetup() {
 
     try {
       const response= await quiz(formData.topic,formData.level,formData.numQuestions);
-      console.log("response",response);
-      console.log("response",response.data);
       // Store quiz data in sessionStorage for now
       sessionStorage.setItem("quizData", JSON.stringify({
         topic: formData.topic,

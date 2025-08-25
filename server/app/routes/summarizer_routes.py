@@ -71,7 +71,7 @@ combine_prompt_template = PromptTemplate(
     input_variables=["text","ln"],
     template="""
 Provide the final summary with important points.
-Add a Motivation Title, intro, and present the summary as numbered points in {ln}.
+Add a Title, intro, and present the summary as numbered points in {ln}.
 
 Content:
 {text}
@@ -109,7 +109,6 @@ def summarize_url():
             "text": documents[0].page_content,
             "ln": ln
         })
-
         return jsonify({"summary": response["output_text"]})
 
     except Exception as e:

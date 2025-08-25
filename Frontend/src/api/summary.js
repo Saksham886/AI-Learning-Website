@@ -1,9 +1,9 @@
 // src/api/summary.ts
 import api from "./index"; // your axios instance
 
-export async function summarizeUrl(url) {
+export async function summarizeUrl(url,language) {
   try {
-    const res = await api.post("summarize/url", { url });
+    const res = await api.post("summarize/url", { url,language });
     return res.data;
   } catch (error) {
     throw new Error(
