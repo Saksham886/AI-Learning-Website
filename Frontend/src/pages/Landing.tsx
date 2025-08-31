@@ -10,12 +10,12 @@ import {
   Users, 
   Zap, 
   Target,
-  ArrowRight,
-  Play
+  ArrowRight
 } from "lucide-react";
 
 export default function Landing() {
   const [backendStatus, setBackendStatus] = useState("starting");
+
   const features = [
     {
       icon: Brain,
@@ -39,35 +39,38 @@ export default function Landing() {
     }
   ];
 
-const stats = [
-  { value: "5K+", label: "Explanations Given" },
-  { value: "2K+", label: "Summaries Generated" },
-  { value: "1K+", label: "Quizzes Created" },
-  { value: "90%", label: "Student Satisfaction" }
-];
-   useEffect(() => {
-    // Ping the backend root route
-    fetch("https://ai-learning-website.onrender.com/")
-      .then(response => {
-        if (response.ok) {
-          setBackendStatus("ready");
-        } else {
+  const stats = [
+    { value: "5K+", label: "Explanations Given" },
+    { value: "2K+", label: "Summaries Generated" },
+    { value: "1K+", label: "Quizzes Created" },
+    { value: "90%", label: "Student Satisfaction" }
+  ];
+
+  useEffect(() => {
+    // Poll backend until it's ready
+    let interval = setInterval(() => {
+      fetch("https://ai-learning-website.onrender.com/")
+        .then(response => {
+          if (response.ok) {
+            setBackendStatus("ready");
+            clearInterval(interval); // stop polling when ready
+          }
+        })
+        .catch(() => {
           setBackendStatus("error");
-        }
-      })
-      .catch(() => {
-        setBackendStatus("error");
-      });
+        });
+    }, 5000); // every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
-
-
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Loader or status notice */}
+      {/* Loader or error message */}
       {backendStatus === "starting" && (
-        <div className="fixed top-0 left-0 w-full bg-yellow-200 text-yellow-900 text-center py-2 z-50">
-          🔄 Starting backend server...
+        <div className="fixed top-0 left-0 w-full bg-yellow-200 text-yellow-900 text-center py-2 z-50 flex items-center justify-center gap-2">
+          <div className="w-4 h-4 border-2 border-yellow-900 border-t-transparent rounded-full animate-spin"></div>
+          <span>Starting backend server...</span>
         </div>
       )}
       {backendStatus === "error" && (
@@ -75,11 +78,7 @@ const stats = [
           ❌ Backend failed to start. Some features may not work!
         </div>
       )}
-      {backendStatus === "ready" && (
-        <div className="fixed top-0 left-0 w-full bg-green-200 text-green-900 text-center py-2 z-50">
-          ✅ Backend server is ready!
-        </div>
-      )}
+
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="container mx-auto px-4">
@@ -140,6 +139,7 @@ const stats = [
               </div>
             </motion.div>
 
+            {/* Right side card with floating icons */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -158,17 +158,11 @@ const stats = [
                         <BookOpen className="w-6 h-6 text-white" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-foreground">Explore, Learn, and Grow with AI Assistance</h3>
-                        {/* <p className="text-sm text-muted-foreground">Progress: 78%</p> */}
+                        <h3 className="font-semibold text-foreground">
+                          Explore, Learn, and Grow with AI Assistance
+                        </h3>
                       </div>
                     </div>
-                    {/* <div className="w-full bg-muted rounded-full h-3">
-                      <div className="bg-primary h-3 rounded-full w-3/4"></div>
-                    </div>
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>12 lessons completed</span>
-                      <span>3 lessons remaining</span>
-                    </div> */}
                   </div>
                 </motion.div>
                 
