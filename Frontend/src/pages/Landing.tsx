@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 
 export default function Landing() {
+  const [backendStatus, setBackendStatus] = useState("starting");
   const features = [
     {
       icon: Brain,
@@ -43,10 +45,41 @@ const stats = [
   { value: "1K+", label: "Quizzes Created" },
   { value: "90%", label: "Student Satisfaction" }
 ];
+   useEffect(() => {
+    // Ping the backend root route
+    fetch("https://ai-learning-website.onrender.com/")
+      .then(response => {
+        if (response.ok) {
+          setBackendStatus("ready");
+        } else {
+          setBackendStatus("error");
+        }
+      })
+      .catch(() => {
+        setBackendStatus("error");
+      });
+  }, []);
+
 
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Loader or status notice */}
+      {backendStatus === "starting" && (
+        <div className="fixed top-0 left-0 w-full bg-yellow-200 text-yellow-900 text-center py-2 z-50">
+          🔄 Starting backend server...
+        </div>
+      )}
+      {backendStatus === "error" && (
+        <div className="fixed top-0 left-0 w-full bg-red-200 text-red-900 text-center py-2 z-50">
+          ❌ Backend failed to start. Some features may not work!
+        </div>
+      )}
+      {backendStatus === "ready" && (
+        <div className="fixed top-0 left-0 w-full bg-green-200 text-green-900 text-center py-2 z-50">
+          ✅ Backend server is ready!
+        </div>
+      )}
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="container mx-auto px-4">
