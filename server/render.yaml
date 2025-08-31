@@ -6,4 +6,5 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn main:app   
     postBuild:
-      - playwright install chromium --with-deps
+    - playwright install --with-deps
+
