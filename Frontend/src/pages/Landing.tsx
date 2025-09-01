@@ -46,23 +46,38 @@ export default function Landing() {
     { value: "90%", label: "Student Satisfaction" }
   ];
 
-  useEffect(() => {
-    // Poll backend until it's ready
-    let interval = setInterval(() => {
-      fetch("https://ai-learning-website.onrender.com/")
-        .then(response => {
-          if (response.ok) {
-            setBackendStatus("ready");
-            clearInterval(interval); // stop polling when ready
-          }
-        })
-        .catch(() => {
-          setBackendStatus("error");
-        });
-    }, 5000); // every 5 seconds
+ useEffect(() => {
+  const saved = JSON.parse(localStorage.getItem("backendStatus"));
 
-    return () => clearInterval(interval);
-  }, []);
+  // check if saved and still valid (30 min = 1800000 ms)
+  if (saved && saved.status === "ready" && Date.now() - saved.timestamp < 30 * 60 * 1000) {
+    setBackendStatus("ready");
+    return; // don’t poll again
+  }
+
+  let interval = setInterval(() => {
+    fetch("https://ai-learning-website.onrender.com/")
+      .then((response) => {
+        if (response.ok) {
+          setBackendStatus("ready");
+          localStorage.setItem(
+            "backendStatus",
+            JSON.stringify({
+              status: "ready",
+              timestamp: Date.now()
+            })
+          );
+          clearInterval(interval);
+        }
+      })
+      .catch(() => {
+        setBackendStatus("error");
+      });
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
 
   return (
     <div className="min-h-screen bg-background">
