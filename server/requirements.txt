@@ -11,7 +11,7 @@ validator
 fpdf2
 pdfplumber
 huggingface_hub
-youtube-transcript-api
+youtube-transcript-api==0.6.2
 transformers
 gunicorn
 requests==2.32.3
