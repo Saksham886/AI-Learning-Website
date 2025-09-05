@@ -17,4 +17,5 @@ gunicorn
 requests==2.32.3
 beautifulsoup4==4.12.3
 trafilatura==1.12.2
-lxml[html_clean]
+lxml==5.2.2
+lxml-html-clean==0.4.2
