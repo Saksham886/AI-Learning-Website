@@ -6,6 +6,7 @@ from fpdf import FPDF
 import pdfplumber
 import requests
 from bs4 import BeautifulSoup
+
 import re
 # Langchain imports
 from langchain_community.document_loaders import YoutubeLoader
@@ -30,15 +31,18 @@ llm = ChatGroq(model="gemma2-9b-it", api_key=os.getenv("GROQ_API_KEY"))
 
 # ==== Helper Functions ====
 def create_pdf(summary_text):
-    try:
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-        for line in summary_text.split('\n'):
-            pdf.multi_cell(0, 10, line)
-        return pdf.output(dest='S').encode('latin1')
-    except UnicodeEncodeError:
-        return None
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.set_auto_page_break(auto=True, margin=15)
+    
+    # Replace unsupported characters with '?'
+    safe_text = summary_text.encode("latin-1", "replace").decode("latin-1")
+    
+    for line in safe_text.split('\n'):
+        pdf.multi_cell(0, 10, line)
+    
+    return pdf.output(dest='S').encode('latin1')
 
 def load_pdf_from_memory(file):
     docs = []
@@ -50,9 +54,7 @@ def load_pdf_from_memory(file):
     return docs
 
 def get_youtube_transcript_langchain(url):
-    """Get YouTube transcript using LangChain's YoutubeLoader"""
     try:
-        # Create loader with LangChain
         loader = YoutubeLoader.from_youtube_url(
             url,
             add_video_info=True,  # Adds title, description, etc.
@@ -74,7 +76,7 @@ def get_youtube_transcript_langchain(url):
             raise Exception("This YouTube video doesn't have transcripts/subtitles available. Please try a different video with subtitles enabled.")
         else:
             raise Exception(f"Could not retrieve transcript: {error_msg}")
-
+        
 def scrape_regular_url(url):
     """Scrape non-YouTube URLs using requests + BeautifulSoup"""
     headers = {
@@ -147,11 +149,13 @@ def summarize_url():
         if "youtube.com" in url or "youtu.be" in url:
             try:
                 # Use LangChain YouTube loader
-                document = get_youtube_transcript_langchain(url)
+                document = get_youtube_transcript_langchain(url) 
                 documents = [document]
             except Exception as e:
+                print(e)
                 return jsonify({
                     "error": str(e)
+                    
                 }), 400
         else:
             documents = scrape_regular_url(url)
