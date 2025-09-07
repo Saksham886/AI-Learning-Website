@@ -131,12 +131,18 @@ export default function QuizSetup() {
                   min="1"
                   max="20"
                   value={formData.numQuestions}
-                  onChange={(e) => setFormData(prev => ({ 
-                    ...prev, 
-                    numQuestions: parseInt(e.target.value) || 1 
-                  }))}
+                  onChange={(e) => {
+                    let value = parseInt(e.target.value) || 1;
+                    if (value < 1) value = 1;
+                    if (value > 20) value = 20; 
+                    setFormData(prev => ({ 
+                      ...prev, 
+                      numQuestions: value 
+                    }));
+                  }}
                   className="text-center"
                 />
+
                 <p className="text-xs text-muted-foreground">Choose between 1 and 20 questions</p>
               </motion.div>
 
