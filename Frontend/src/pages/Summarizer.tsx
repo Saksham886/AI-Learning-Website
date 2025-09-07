@@ -96,7 +96,7 @@ const handleDownloadPdf = () => {
             <div>
               <h1 className="text-3xl font-bold text-foreground">AI Summarizer</h1>
               <p className="text-muted-foreground">
-                Summarize PDFs or URLs into concise key points in any language
+                Summarize PDFs into concise key points in any language
               </p>
             </div>
           </div>
@@ -106,11 +106,11 @@ const handleDownloadPdf = () => {
         <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:0.6,delay:0.1}}>
           <Card className="p-6 space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
-              {/* URL Input */}
+{/*               {/* URL Input */}
               <div className="space-y-2">
                 <Label htmlFor="url">Enter URL</Label>
                 <Input id="url" value={url} onChange={(e)=>setUrl(e.target.value)} placeholder="https://example.com/article"/>
-              </div>
+              </div> */}
 
               {/* File Upload */}
               <div className="space-y-2">
